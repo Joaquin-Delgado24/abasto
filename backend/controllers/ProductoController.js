@@ -111,10 +111,28 @@ function eliminar(req, res){
     })
 }
 
+function update_stock(req, res) {
+    let id = req.params['id'];
+    let data = req.body;
+
+    Producto.findById(id, (err, producto_data) => {
+        if(producto_data){
+            Producto.findByIdAndUpdate(id, {stock: parseInt(producto_data.stock) + parseInt(data.stock)}, (err, producto_edit) => {
+                if(producto_edit){             
+                    res.status(200).send({producto: producto_edit});
+                }
+            })
+        }else{
+            res.status(500).send(err);
+        }
+    })
+}
+
 module.exports = {
     registrar,
     listar,
     editar,
     obtener_producto,
     eliminar,
+    update_stock,
 }
