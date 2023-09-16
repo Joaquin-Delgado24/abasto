@@ -31,7 +31,49 @@ function listar(req, res) {
     console.log('res: ', res);
 }
 
+function editar(req, res) {
+
+    const data = req.body;
+    const id = req.params['id'];
+
+    if(req.files){
+        const image_path = req.files.imagen.path;
+        const name = image_path.split('\\');
+        const imagen_name = name[2];
+
+        Producto.findByIdAndUpdate({_id: id},{titulo: data.titulo, descripcion: data.descripcion, imagen: imagen_name,
+        precio_compra: data.precio_compra, precio_venta: data.precio_venta, stock: data.stock, idcategoria: data.idcategoria,
+        puntos: data.puntos}, (err, producto_edit) => {
+            if(err){
+                res.status(500).send({message: 'Error en el servidor'});
+            }else{
+                if(producto_edit){
+                    res.status(200).send({producto: producto_edit});
+                }else{
+                    res.status(403).send({message: 'No se edito el producto'});
+                }
+            }
+        })
+    }else{
+        Producto.findByIdAndUpdate({_id: id},{titulo: data.titulo, descripcion: data.descripcion,
+        precio_compra: data.precio_compra, precio_venta: data.precio_venta, stock: data.stock, idcategoria: data.idcategoria,
+        puntos: data.puntos}, (err, producto_edit) => {
+            if(err){
+                res.status(500).send({message: 'Error en el servidor'});
+            }else{
+                if(producto_edit){
+                    res.status(200).send({producto: producto_edit});
+                }else{
+                    res.status(403).send({message: 'No se edito el producto'});
+                }
+            }
+        })
+    }
+}
+
+
 module.exports = {
     registrar,
     listar,
+    editar,
 }
