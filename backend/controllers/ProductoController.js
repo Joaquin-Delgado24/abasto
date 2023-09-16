@@ -1,4 +1,5 @@
 const Producto = require("../models/producto");
+const fs = require('fs');
 
 function registrar(req, res) {
     const data = req.body;
@@ -6,12 +7,13 @@ function registrar(req, res) {
     
     producto.titulo = data.titulo;
     producto.descripcion = data.descripcion;
-    producto.imagen = req.files?.imagen?.path.split('\\')[2] ?? null;
+    producto.imagen = req.files?.imagen?.path.split('\\')[1] ?? null;
     producto.precio_compra = data.precio_compra;
     producto.precio_venta = data.precio_venta;
     producto.stock = data.stock;
     producto.idCategoria = data.idCategoria;
     producto.puntos = data.puntos;
+
 
     producto.save((err, producto_save) => {
         if (err) {
@@ -35,11 +37,17 @@ function editar(req, res) {
 
     const data = req.body;
     const id = req.params['id'];
+    const img = req.params['img'];
 
     if(req.files){
+
+        fs.unlink('./uploads/'+img, (err) => {
+            if(err) throw err;
+        })
+
         const image_path = req.files.imagen.path;
         const name = image_path.split('\\');
-        const imagen_name = name[2];
+        const imagen_name = name[1];
 
         Producto.findByIdAndUpdate({_id: id},{titulo: data.titulo, descripcion: data.descripcion, imagen: imagen_name,
         precio_compra: data.precio_compra, precio_venta: data.precio_venta, stock: data.stock, idcategoria: data.idcategoria,
@@ -71,9 +79,42 @@ function editar(req, res) {
     }
 }
 
+function obtener_producto(req, res) {
+    const id = req.params['id'];
+
+    Producto.findOne({_id: id}, (err, producto_data) => {
+        if(err) {
+            res.status(500).send({message: 'Error en el servidor'});
+        }else{
+            if(producto_data){
+                res.status(200).send({producto: producto_data});
+            }else{
+                res.status(403).send({message: 'No existe en el registro'});
+            }
+        }
+    })
+}
+
+function eliminar(req, res){
+    const id = req.params['id'];
+
+    Producto.findOneAndRemove({_id:id}, (err, producto_delete) => {
+        if(err) {
+            res.status(500).send({message: 'Error en el servidor'});
+        }else{
+            if(producto_delete) {
+                res.status(200).send({producto: producto_delete});
+            }else{
+                res.status(403).send({message: 'No se elimino el producto'});
+            }
+        }
+    })
+}
 
 module.exports = {
     registrar,
     listar,
     editar,
+    obtener_producto,
+    eliminar,
 }
