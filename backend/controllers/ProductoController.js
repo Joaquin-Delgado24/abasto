@@ -28,55 +28,57 @@ function registrar(req, res) {
     });
 }
 
-
 function listar(req, res) {
-    console.log('res: ', res);
+    const titulo = req.params['titulo'];
+
+    Producto.find({titulo: new RegExp(titulo, 'i')}, (err, producto_listado) => {
+        if(err) {
+            res.status(500).send({message: 'Error en el servidor'});
+        }else{
+            if(producto_listado){
+                res.status(200).send({productos: producto_listado});
+            }else{
+                res.status(403).send({message: 'No hay ningun registro con ese titulo'});
+            }
+        }
+    })
 }
 
 function editar(req, res) {
-
     const data = req.body;
-    const id = req.params['id'];
-    const img = req.params['img'];
+    const id = req.params.id;
+    const img = req.params.img;
 
-    if(req.files){
+    const updateData = {
+        titulo: data.titulo,
+        descripcion: data.descripcion,
+        precio_compra: data.precio_compra,
+        precio_venta: data.precio_venta,
+        stock: data.stock,
+        idcategoria: data.idcategoria,
+        puntos: data.puntos,
+        imagen: req.files ? req.files.imagen.path.split('\\')[1] : undefined,
+    };
 
-        fs.unlink('./uploads/'+img, (err) => {
-            if(err) throw err;
-        })
-
-        const image_path = req.files.imagen.path;
-        const name = image_path.split('\\');
-        const imagen_name = name[1];
-
-        Producto.findByIdAndUpdate({_id: id},{titulo: data.titulo, descripcion: data.descripcion, imagen: imagen_name,
-        precio_compra: data.precio_compra, precio_venta: data.precio_venta, stock: data.stock, idcategoria: data.idcategoria,
-        puntos: data.puntos}, (err, producto_edit) => {
-            if(err){
-                res.status(500).send({message: 'Error en el servidor'});
-            }else{
-                if(producto_edit){
-                    res.status(200).send({producto: producto_edit});
-                }else{
-                    res.status(403).send({message: 'No se edito el producto'});
-                }
+    if (req.files) {
+        fs.unlink('./uploads/' + img, (err) => {
+            if (err) {
+                if(err) throw err;
             }
-        })
-    }else{
-        Producto.findByIdAndUpdate({_id: id},{titulo: data.titulo, descripcion: data.descripcion,
-        precio_compra: data.precio_compra, precio_venta: data.precio_venta, stock: data.stock, idcategoria: data.idcategoria,
-        puntos: data.puntos}, (err, producto_edit) => {
-            if(err){
-                res.status(500).send({message: 'Error en el servidor'});
-            }else{
-                if(producto_edit){
-                    res.status(200).send({producto: producto_edit});
-                }else{
-                    res.status(403).send({message: 'No se edito el producto'});
-                }
-            }
-        })
+        });
     }
+
+    Producto.findByIdAndUpdate({ _id: id }, updateData, (err, producto_edit) => {
+        if (err) {
+            res.status(500).send({ message: 'Error en el servidor' });
+        } else {
+            if(producto_edit){
+                res.status(200).send({producto: producto_edit});
+            }else{
+                res.status(403).send({message: 'No se edito el producto'});
+            }
+        }
+    });
 }
 
 function obtener_producto(req, res) {
