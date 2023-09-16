@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 //ROUTES
 var categoria_routes = require('./routes/categoria');
 var producto_routes = require('./routes/producto');
+var user_routes = require('./routes/user');
 
 const app = express();
 
@@ -23,6 +24,7 @@ db.once("open", function () {
 
 app.use('/api', categoria_routes);
 app.use('/api', producto_routes);
+app.use('/api', user_routes);
 
 app.listen(3000, () => {
   console.log("Servidor corriendo en puerto 3000");
