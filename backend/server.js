@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 var categoria_routes = require('./routes/categoria');
 var producto_routes = require('./routes/producto');
 var user_routes = require('./routes/user');
+var marca_routes = require('./routes/marca');
 
 const app = express();
 
@@ -13,7 +14,8 @@ app.use(express.json());
 mongoose.set('strictQuery', false);
 
 mongoose.connect(
-  `mongodb+srv://aradb:aradbpass@cluster0.krbhq.mongodb.net/?retryWrites=true&w=majority`
+    //`mongodb+srv://aradb:aradbpass@cluster0.krbhq.mongodb.net/?retryWrites=true&w=majority`
+    `mongodb://localhost:27017/test`
 );
 
 const db = mongoose.connection;
@@ -25,6 +27,7 @@ db.once("open", function () {
 app.use('/api', categoria_routes);
 app.use('/api', producto_routes);
 app.use('/api', user_routes);
+app.use('/api', marca_routes);
 
 app.listen(3000, () => {
   console.log("Servidor corriendo en puerto 3000");

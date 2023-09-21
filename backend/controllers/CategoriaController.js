@@ -24,7 +24,7 @@ function obtener_categoria(req, res) {
   var id = req.params["id"];
 
   Categoria.findById({ _id: id }, (err, categoria_data) => {
-    if (err) {
+      if (err) {
       res.status(500).send({ message: "Error en el servidor" });
     } else {
       if (categoria_data) {

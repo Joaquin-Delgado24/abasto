@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\backend",
+    "\\backend\\controllers",
+    "\\backend\\models",
+    "\\backend\\routes"
+  ],
+  "SelectedNode": "\\backend\\routes\\marca.js",
+  "PreviewInSolutionExplorer": false
+}
