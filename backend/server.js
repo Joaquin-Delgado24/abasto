@@ -7,6 +7,7 @@ var producto_routes = require('./routes/producto');
 var user_routes = require('./routes/user');
 var marca_routes = require('./routes/marca');
 
+
 const app = express();
 
 app.use(express.json());

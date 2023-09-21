@@ -1,4 +1,5 @@
 const Producto = require("../models/producto");
+const fs = require('fs');
 var fs = require('fs');
 
 
@@ -6,9 +7,7 @@ var fs = require('fs');
 function registrar(req, res) {
     const data = req.body;
     const producto = new Producto();
-
-    console.log(req);
-
+    
     producto.titulo = data.titulo;
     producto.descripcion = data.descripcion;
     producto.imagen = (req.files?.imagen?.path.split('\\')[1] ?? req.files?.imagen?.path.split('\\')[2]) ?? null;
@@ -17,6 +16,7 @@ function registrar(req, res) {
     producto.stock = data.stock;
     producto.idCategoria = data.idCategoria;
     producto.puntos = data.puntos;
+
 
     producto.save((err, producto_save) => {
         if (err) {
@@ -29,6 +29,22 @@ function registrar(req, res) {
             }
         }
     });
+}
+
+function listar(req, res) {
+    const titulo = req.params['titulo'];
+
+    Producto.find({titulo: new RegExp(titulo, 'i')}, (err, producto_listado) => {
+        if(err) {
+            res.status(500).send({message: 'Error en el servidor'});
+        }else{
+            if(producto_listado){
+                res.status(200).send({productos: producto_listado});
+            }else{
+                res.status(403).send({message: 'No hay ningun registro con ese titulo'});
+            }
+        }
+    })
 }
 
 function listar(req, res) {
