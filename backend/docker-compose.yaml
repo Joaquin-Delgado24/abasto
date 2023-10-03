@@ -1,0 +1,33 @@
+version: "3.7"
+
+services:
+  # aplicacion
+  abasto-app:
+    image: abasto:latest
+    ports: 
+      - 3000:3000
+    environment:
+      - MONGODB_URL=mongodb://mongodb:27017/test
+    depends_on:
+      - mongodb
+    networks:
+      - abasto-network
+
+  # base de datos
+  mongodb:
+    image: mongo:7.0.2-jammy
+    ports:
+      - '27017:27017'
+    volumes:
+      - dbdata:/data/db
+    networks:
+      - abasto-network
+
+# volumen donde se guardan los datos    
+volumes:
+  dbdata:
+
+# red para unir ambos componentes
+networks:
+  abasto-network:
+    driver: bridge

@@ -4,8 +4,8 @@
     "\\backend",
     "\\backend\\controllers",
     "\\backend\\models",
-    "\\backend\\routes"
+    "\\backend\\routes",
+    "\\backend\\uploads"
   ],
-  "SelectedNode": "\\backend\\routes\\marca.js",
   "PreviewInSolutionExplorer": false
 }

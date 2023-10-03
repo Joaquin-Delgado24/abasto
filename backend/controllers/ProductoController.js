@@ -1,6 +1,5 @@
 const Producto = require("../models/producto");
 const fs = require('fs');
-var fs = require('fs');
 
 
 

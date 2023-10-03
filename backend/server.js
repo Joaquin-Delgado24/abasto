@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 //ROUTES
 var categoria_routes = require('./routes/categoria');
 var producto_routes = require('./routes/producto');
-var user_routes = require('./routes/user');
 var marca_routes = require('./routes/marca');
 
 
@@ -16,7 +15,7 @@ mongoose.set('strictQuery', false);
 
 mongoose.connect(
     //`mongodb+srv://aradb:aradbpass@cluster0.krbhq.mongodb.net/?retryWrites=true&w=majority`
-    `mongodb://localhost:27017/test`
+    `${process.env.MONGODB_URL}`
 );
 
 const db = mongoose.connection;
@@ -26,8 +25,7 @@ db.once("open", function () {
 });
 
 app.use('/api', categoria_routes);
-app.use('/api', producto_routes);
-app.use('/api', user_routes);
+app.use('/api', producto_routes); 
 app.use('/api', marca_routes);
 
 app.listen(3000, () => {
