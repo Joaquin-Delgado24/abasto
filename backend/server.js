@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 var categoria_routes = require('./routes/categoria');
 var producto_routes = require('./routes/producto');
 var marca_routes = require('./routes/marca');
+var venta_routes = require('./routes/venta');
 
 var db_url = (process.env.MONGODB_URL || `mongodb://localhost:27017/test`)
 
@@ -28,6 +29,7 @@ db.once("open", function () {
 app.use('/api', categoria_routes);
 app.use('/api', producto_routes); 
 app.use('/api', marca_routes);
+app.use('/api', venta_routes);
 
 app.listen(3000, () => {
   console.log("Servidor corriendo en puerto 3000");

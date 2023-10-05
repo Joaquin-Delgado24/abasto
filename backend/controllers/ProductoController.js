@@ -138,7 +138,7 @@ function obtener_producto(req, res) {
             res.status(500).send({ message: "Error en el servidor" });
         } else {
             if (producto_data) {
-                res.status(200).send({ categoria: producto_data });
+                res.status(200).send({ producto: producto_data });
             } else {
                 res.status(403).send({ message: "El producto no existe" });
             }

@@ -7,6 +7,6 @@
     "\\backend\\routes",
     "\\backend\\uploads"
   ],
-  "SelectedNode": "\\backend\\package-lock.json",
+  "SelectedNode": "\\backend\\controllers\\CategoriaController.js",
   "PreviewInSolutionExplorer": false
 }
