@@ -15,7 +15,7 @@ services:
 
   # base de datos
   mongodb:
-    image: mongo:7.0.2-jammy
+    image: mongo:4.4.6
     ports:
       - '27017:27017'
     volumes:
