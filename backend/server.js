@@ -6,6 +6,7 @@ var categoria_routes = require('./routes/categoria');
 var producto_routes = require('./routes/producto');
 var marca_routes = require('./routes/marca');
 
+var db_url = (process.env.MONGODB_URL || `mongodb://localhost:27017/test`)
 
 const app = express();
 
@@ -15,7 +16,7 @@ mongoose.set('strictQuery', false);
 
 mongoose.connect(
     //`mongodb+srv://aradb:aradbpass@cluster0.krbhq.mongodb.net/?retryWrites=true&w=majority`
-    `${process.env.MONGODB_URL}`
+    `${db_url}`
 );
 
 const db = mongoose.connection;
